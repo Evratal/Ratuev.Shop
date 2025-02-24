@@ -7,15 +7,14 @@
 </head>
 <body>
     <h1>Список статей</h1>
-    <a href="{% url 'post_create' %}">Создать новую статью</a>
-    <ul>
-        {% for post in posts %}
-            <li>
-                <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
-                <p>Просмотры: {{ post.views_count }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+    <a href="{% url 'blog:post_create' %}">Создать новую статью</a>
+        <ul>
+            {% for post in object_list %}
+                <li>
+                    <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                    <p>Просмотры: {{ post.views_count }}</p>
+                </li>
+            {% endfor %}
+        </ul>
 </body>
 </html>
-2. post_d
