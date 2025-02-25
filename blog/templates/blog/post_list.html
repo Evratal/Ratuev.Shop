@@ -11,7 +11,9 @@
         <ul>
             {% for post in object_list %}
                 <li>
-                    <a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a>
+                    <a class="btn btn-primary" href="{% url 'blog:post_detail' post.pk %}" role="button">Посмотреть {{ post.title }}</a>
+                    <a class="btn btn-primary" href="{% url 'blog:post_update' post.pk %}" role="button">Редактировать {{ post.title }}</a>
+                    <a class="btn btn-primary" href="{% url 'blog:post_delete' post.pk %}" role="button">Удалить {{ post.title }}</a>
                     <p>Просмотры: {{ post.views_count }}</p>
                 </li>
             {% endfor %}

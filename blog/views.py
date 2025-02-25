@@ -8,14 +8,12 @@ from .forms import PostForm
 
 
 class PostListView(ListView):
-    model = Post
     queryset = Post.objects.filter(is_published=True)  # Пример фильтрации
     template_name = 'blog/post_list.html'
 
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
 
     def get_object(self, queryset=None):
         post = super().get_object(queryset)
@@ -25,25 +23,19 @@ class PostDetailView(DetailView):
 
 class PostCreateView(CreateView):
     model = Post
-    form_class = PostForm
-    template_name = 'blog/post_form.html'
+    fields = ("title","slug","content")
     success_url = reverse_lazy("blog:post_list")
 
 
 class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
-    template_name = 'blog/post_form.html'
-    success_url = reverse_lazy("blog:post_list")
 
-    def get_object(self, queryset=None):
-        return super().get_object(queryset)
+    success_url = reverse_lazy("blog:post_detail")
+
 
 
 class PostDeleteView(DeleteView):
     model = Post
-    template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy("blog:post_list")
 
-    def get_object(self, queryset=None):
-        return super().get_object(queryset)
