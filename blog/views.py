@@ -24,14 +24,16 @@ class PostDetailView(DetailView):
 class PostCreateView(CreateView):
     model = Post
     fields = ("title","slug","content")
-    success_url = reverse_lazy("blog:post_list")
 
+    def get_success_url(self):
+        return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
 class PostUpdateView(UpdateView):
     model = Post
     form_class = PostForm
 
-    success_url = reverse_lazy("blog:post_detail")
+    def get_success_url(self):
+        return reverse_lazy("blog:post_detail", kwargs={"pk": self.object.pk})
 
 
 
