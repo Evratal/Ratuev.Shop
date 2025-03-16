@@ -1,30 +1,49 @@
-{% extends 'catalog/base.html'%}
+{% extends 'catalog/base.html' %}
 {% load my_tags %}
-{% block content%}
 
-<div class="album py-5 bg-body-tertiary">
-    <div class="container">
-      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        <div class="col">
-          <div class="card shadow-sm">
-            <img src="{{ product.image | media_filter }}">
-            <div class="card-body">
-              <p class="card-text"> Название: {{ object.name }}</p>
-              <p class="card-text">Описание: {{ object.description }}</p>
-              <p class="card-text">Категория: {{ object.category }}</p>
-              <p class="card-text">Цена: {{ object.price }}</p>
+{% block content %}
+  <div class="container">
+       <div class="row">
+         <div class="col-lg-8 col-md-10 col-sm-12 mx-auto">
+             <div class="card mt-4">
+             <!-- Карточка товара -->
+               <div class="card-header">
+                <h3 class="card-title">{{ object.name }}</h3>
+               </div>
 
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
+               <div class="card-body">
+               <!-- Изображение товара -->
+               <div class="text-center mb-4">
+                <img src="{{ object.image | media_filter }}" class="img-fluid" style="max-width: 400px;">
+               </div>
 
-                  <a class="btn btn-primary" href="{% url 'catalog:product_list' %}" role="button">Назад</a>
-                </div>
-                <small class="text-body-secondary">9 mins</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+             <!-- Основная информация -->
+             <ul class="list-group list-group-flush">
+               <li class="list-group-item">
+                <strong>Описание:</strong> {{ object.description }}
+               </li>
+               <li class="list-group-item">
+                <strong>Категория:</strong> {{ object.category }}
+               </li>
+               <li class="list-group-item">
+                <strong>Цена:</strong> {{ object.price }} руб.
+               </li>
+               <li class="list-group-item">
+                 <strong>Дата добавления:</strong> {{ object.created_at|date:"d M Y" }}
+               </li>
+             </ul>
+
+             <!-- Кнопки управления -->
+               <div class="d-flex justify-content-between align-items-center mt-3">
+                 <div class="btn-group">
+                   <a class="btn btn-primary" href="{% url 'catalog:product_update' object.pk %}" role="button">Редактировать</a>
+                   <a class="btn btn-danger" href="{% url 'catalog:product_confirm_delete' object.pk %}" role="button">Удалить</a>
+                 </div>
+               <a class="btn btn-secondary" href="{% url 'catalog:product_list' %}" role="button">Вернуться к списку</a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
   </div>
 {% endblock %}
