@@ -174,9 +174,33 @@
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">Интернет магазин</h1>
         <p class="lead text-body-secondary">Поле чудес</p>
+        {% if user.is_authenticated %}
         <p>
-          <a class="btn btn-primary" href="{% url 'catalog:product_create' %}" role="button">Добавить товар</a>
+          {% if user.is_authenticated %}
+          <li class="nav_item">
+            <a class="btn btn-primary" href="{% url 'catalog:product_create' %}" role="button">Добавить товар</a>
+          </li>
+          {% endif %}
           <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+           <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+	                    <form method="post" action="{% url 'user:logout' %}" style="display: inline;">
+	                        {% csrf_token %}
+	                        <button type="submit" class="btn btn-link nav-link">Выйти
+	                        </button>
+	                    </form>
+	                </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:login' %}">Войти</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'user:register' %}">Регистрация</a>
+                    </li>
+                {% endif %}
+            </ul>
+
         </p>
       </div>
     </div>
