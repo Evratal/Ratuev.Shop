@@ -1,11 +1,15 @@
 import secrets
-from django.contrib.auth.forms import UserChangeForm
+
+from django.contrib.auth import logout
+from django.contrib.auth.views import LogoutView
 from django.shortcuts import get_object_or_404, redirect
-from django.template.context_processors import request
+
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
+from django.views.decorators.http import require_http_methods
 from django.views.generic.edit import CreateView
 
-from config.settings import EMAIL_HOST_PASSWORD, EMAIL_HOST_USER
+from config.settings import EMAIL_HOST_USER
 from users.forms import UserRegisterForm
 from users.models import User
 from django.core.mail import send_mail
@@ -17,13 +21,13 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self,form):
-        user = form.save
+        user = form.save(commit=False)
         user.is_active = False
         token = secrets.token_hex(16)
         user.token = token
         user.save()
         host = self.request.get_host()
-        url = f"http//{host}/users/email_confirm/{token}/"
+        url = f"http://{host}/users/email_confirm/{token}/"
 
         send_mail (
             subject = 'Подтверждение почты',
@@ -36,7 +40,14 @@ class UserCreateView(CreateView):
 
 
 def email_verification(request,token):
-        user = get_object_or_404(token=token)
+        user = get_object_or_404(User, token=token)
         user.is_active = True
         user.save()
         return redirect(reverse("users:login"))
+
+
+@require_http_methods(["POST"])  # Разрешаем только POST-запросы
+def simple_logout(request):
+    """Безопасный выход из системы"""
+    logout(request)
+    return redirect('catalog:product_list')
