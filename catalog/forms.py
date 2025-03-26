@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 
 from catalog.models import Product
-
+from users.forms import StyleFormMixin
 
 # Список запрещенных слов
 FORBIDDEN_WORDS = [
@@ -60,10 +60,8 @@ class ProductForm(ModelForm):
         if price <= 0:
             raise ValidationError("Цена должна быть больше 0")
         return price
-    # name = models.CharField(max_length=150, verbose_name='Наименование')
-    # description = models.TextField(verbose_name="Описание", help_text= 'Введите описание продукта', blank=True, null=True)
-    # image = models.ImageField(upload_to='catalog/image',  blank=True, null=True, verbose_name='Изображение', help_text='Загрузите изображение товара')
-    # category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name='category',blank=True, null=True)
-    # price = models.PositiveIntegerField( verbose_name='Цена')
-    # created_at = models.DateTimeField(auto_now_add=True,verbose_name='Дата создания')  # Установим текущее время на создание
-    # updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата обновления')  # Обновляем время при изменении
+
+class ProductModeratorForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Product
+        fields = ("publish_status",)
