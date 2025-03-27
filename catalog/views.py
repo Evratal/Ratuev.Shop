@@ -1,7 +1,7 @@
 from itertools import product
 
 from django.contrib.auth.decorators import permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
@@ -48,9 +48,17 @@ class ProductUpdateView(UpdateView,LoginRequiredMixin):
         raise PermissionDenied
 
 
-class ProductDeleteView(DeleteView,LoginRequiredMixin):
+class ProductDeleteView(DeleteView,LoginRequiredMixin, UserPassesTestMixin):
     model = Product
     success_url = reverse_lazy("catalog:product_list")
+
+    def test_func(self):
+        product = self.get_object()
+        # Проверяем, что пользователь — владелец ИЛИ имеет право can_delete_any_product
+        return (
+                product.owner == self.request.user
+                or self.request.user.has_perm("catalog.can_delete_any_product")
+        )
 
 @permission_required("catalog.can_unpublish_product")
 def unpublish_product(request, pk):
