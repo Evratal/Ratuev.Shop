@@ -1,0 +1,46 @@
+{% extends 'catalog/base.html' %}
+{% load my_tags %}
+
+{% block content %}
+<div class="album py-5 bg-body-tertiary">
+    <div class="container">
+        <div class="row">
+            <h1 class="mb-4">Продукты в категории: {{ category.name }}</h1>
+
+            {% if products %}
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                    {% for product in products %}
+                    <div class="col">
+                        <div class="card shadow-sm h-100">
+                            {% if product.image %}
+                                <img src="{{ product.image|media_filter }}" class="card-img-top" alt="{{ product.name }}">
+                            {% else %}
+                                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 225px;">
+                                    <span class="text-muted">Нет изображения</span>
+                                </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ product.name }}</h5>
+                                <p class="card-text">
+                                    <strong>Цена:</strong> {{ product.price }} руб.<br>
+                                    {% if product.description %}
+                                        {{ product.description|truncatechars:100 }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{% url 'catalog:product_detail' product.pk %}" class="btn btn-sm btn-outline-secondary">Подробнее</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    В этой категории пока нет продуктов.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
