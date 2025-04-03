@@ -1,0 +1,35 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1>Добро пожаловать в Skystore</h1>
+        <p class="lead">Karanor - лучшие товары для вас</p>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="row">
+        <div class="col-md-8 mx-auto text-center">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="card-title">Skystore</h3>
+                    <p class="card-text">Заглушка</p>
+
+                    <!-- Кнопка "Купить" -->
+                    <a href="#" class="btn btn-primary btn-lg mt-3">
+                        Купить
+                    </a>
+
+                    <!-- Ссылка "К списку" -->
+                    <div class="mt-4">
+                        <a href="{% url 'catalog:product_list' %}" class="text-decoration-none">
+                            <i class="bi bi-arrow-left"></i> К списку
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

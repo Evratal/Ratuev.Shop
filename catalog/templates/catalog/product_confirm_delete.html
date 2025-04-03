@@ -1,0 +1,36 @@
+{% extends 'catalog/base.html' %}
+
+{% block content %}
+  <div class="container">
+   <div class="row">
+     <div class="col-lg-6 col-md-8 col-sm-10 mx-auto">
+       <div class="card">
+         <div class="card-header">
+         <h3 class="card-title">Подтверждение удаления</h3>
+         </div>
+
+         <div class="card-body">
+           <p class="card-text">
+            Вы действительно хотите удалить товар:
+            <strong>{{ object.name }}</strong>?
+           </p>
+
+         <p class="card-text">
+          Все данные о товаре будут безвозвратно удалены.
+         </p>
+
+           <form method="post">
+           {% csrf_token %}
+           <div class="d-flex justify-content-between">
+           <a class="btn btn-secondary" href="{% url 'catalog:product_list' %}">Отмена</a>
+           <button type="submit" class="btn btn-danger">
+           Удалить товар
+           </button>
+           </div>
+           </form>
+         </div>
+       </div>
+     </div>
+   </div>
+  </div>
+{% endblock %}
